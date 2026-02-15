@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>AI Chat</title>
+  <style>
+    body { font-family: Arial; background:#0f172a; color:white; text-align:center; padding:40px }
+    input { padding:10px; width:60%; border-radius:8px; border:none }
+    button { padding:10px 20px; border:none; border-radius:8px; background:#22c55e; color:white }
+    #reply { margin-top:20px; font-size:18px }
+  </style>
+</head>
+<body>
+
+<h2>🤖 موقع الذكاء الاصطناعي</h2>
+
+<input id="msg" placeholder="اكتب سؤالك هنا">
+<br><br>
+<button onclick="askAI()">إرسال</button>
+
+<div id="reply"></div>
+
+<script>
+async function askAI() {
+  const msg = document.getElementById("msg").value;
+
+  const res = await fetch("https://api.openai.com/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer YOUR_API_KEY"
+    },
+    body: JSON.stringify({
+      model: "gpt-4.1-mini",
+      messages: [{ role: "user", content: msg }]
+    })
+  });
+
+  const data = await res.json();
+  document.getElementById("reply").innerText =
+    data.choices?.[0]?.message?.content || "صار خطأ";
+}
+</script>
+
+</body>
+</html>
